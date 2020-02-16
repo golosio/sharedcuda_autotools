@@ -1,8 +1,10 @@
-# sharedcuda_autotools
-Example of autotool configuration for building a CUDA shared library
+# sharedcudaexample
+Complete simple example of implementation of a CUDA / C++ shared library with Makefile for nvcc / c++
 
-This is a complete working example of autotools configuration for building a shared library. The main problem with implementing a CUDA Shared library is that all the .cu files must be compiled and linked in a single step, without producing the .o files, by directly generating the library without having to link separate files. This also serves to the nvcc compiler to make efficient use of the cuda device functions by compiling them as online functions when possible.
-However this possibility is not contemplated by Automake. A possible workaround is to generate first the src/Makefile.in file using autotools, then applying a patch to this file before the make command. Here I apply this patch using a script launched at the end of the config.
-
-You can adapt this example to your need by placing all .cu and .cpp files in the src folder, and replacing the string "sharedcuda" with the name of your library in all files where this string appears.
-Just be careful, you should not delete the dummyfile.cpp file, is a dummy file that does nothing, but it is part of the trick!
+A frequent question from people interested in CUDA/C++ integration is how to write a Makefile for a CUDA/C++ shared library. Since I have spent some time myself to find a good way for doing it, I decided to share my experience and to build this repository with a simple but complete working example. The shared library contains a very simple C++ function "squaredsequence" that generates an array with the integer numbers from 0 to n, and then it calls another C++ function "square" that uses a CUDA kernel "square_kernel" to square all elements of the array. The library can be compiled by the make command:
+make
+that should produce the shared library file libsharedcuda.so in the lib folder.
+As an example of use of this library, in the example folder there is a very simple C++ program that calls the squaredsequence function with n=10 and print the result on the terminal.
+This example can be compiled by executing the script:
+./make.sh
+before executing it, you have to make sure that the folder containing the library is included in the environment variable LD_LIBRARY_PATH. The run.sh script take care of this and executes the example.
